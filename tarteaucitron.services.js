@@ -165,7 +165,7 @@ tarteaucitron.services.posthog = {
 };
 
 // googlesignin
-tarteaucitron.services.signin = {
+tarteaucitron.services.googlesignin = {
     "key": "googlesignin",
     "type": "other",
     "name": "Google Signin",
