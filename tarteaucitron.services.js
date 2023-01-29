@@ -165,7 +165,7 @@ tarteaucitron.services.posthog = {
 };
 
 // googlesignin
-tarteaucitron.services.googlesignin = {
+tarteaucitron.services.signin = {
     "key": "googlesignin",
     "type": "other",
     "name": "Google Signin",
@@ -5854,6 +5854,42 @@ tarteaucitron.services.facebookcustomerchat = {
         "use strict";
         var id = 'facebookcustomerchat';
         tarteaucitron.fallback(['fb-customerchat'], tarteaucitron.engage(id));
+    }
+};
+
+// facebook page
+tarteaucitron.services.facebookpage = {
+    "key": "facebookpage",
+    "type": "social",
+    "name": "Facebook (page)",
+    "uri": "https://www.facebook.com/policy.php",
+    "needConsent": true,
+    "cookies": [],
+    "js": function () {
+        "use strict";
+        // When user allow cookie
+      
+        var newDiv = document.createElement("div");
+        newDiv.setAttribute("id", "fb-root");
+        document.body.appendChild(newDiv);
+
+        tarteaucitron.addScript('https://connect.facebook.net/' + tarteaucitron.getLanguage() + '/sdk.js#xfbml=1&version=v15.0','',null,true,'crossorigin','anonymous');
+        tarteaucitron.fallback(['tac_facebookpage'], function (x) {
+            var frame_title = tarteaucitron.fixSelfXSS(x.getAttribute("title") || 'Facebook Page'),
+                url = x.getAttribute("data-url"),
+                width = x.getAttribute('data-width');
+            return '<div class="fb-page" data-href="'+url+'" data-tabs="timeline" data-width="' + width + '" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="'+url+'" class="fb-xfbml-parse-ignore"><div class="bg-dark">Chargement en cours de <a href="'+url+'">'+frame_title+'</a><small>. S\'il ne s\'affiche pas, vérifié que vous ne bloquez pas les scripts externes.</small></div></blockquote></div>'
+        });
+    },
+    "fallback": function () {
+        "use strict";
+        // when use deny cookie
+      
+        var id = 'facebookpage';
+        tarteaucitron.fallback(['tac_facebookpage'], function (elem) {
+            elem.style.width = elem.getAttribute('width') + 'px';
+            return tarteaucitron.engage(id);
+        });
     }
 };
 
